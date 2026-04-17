@@ -1,6 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './app/styles/index.css'
+import './shared/config/i18n'
 import { AppProviders } from './app/providers'
 
 createRoot(document.getElementById('root')!).render(

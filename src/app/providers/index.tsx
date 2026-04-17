@@ -15,7 +15,16 @@ const queryClient = new QueryClient({
 
 export function AppProviders() {
   return (
-    <ConfigProvider>
+    <ConfigProvider
+      theme={{
+        token: {
+          colorPrimary: '#0EA5E9',
+          colorLink: '#0284C7',
+          borderRadius: 12,
+          fontFamily: "'Manrope', sans-serif",
+        },
+      }}
+    >
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />
         {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
