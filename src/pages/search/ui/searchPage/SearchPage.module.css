@@ -1,14 +1,13 @@
 .page {
   min-height: 100vh;
   position: relative;
-  font-family: var(--font-body);
 }
 
 .page::before {
   content: '';
   position: fixed;
   inset: 0;
-  background: linear-gradient(135deg, #f0f8ff 0%, #e0f2fe 50%, #bae6fd 100%);
+  background: linear-gradient(135deg, var(--blue-50) 0%, var(--blue-100) 50%, var(--blue-200) 100%);
   z-index: -1;
 }
 
@@ -50,10 +49,10 @@
   justify-content: center;
   min-height: 40vh;
   gap: 16px;
-  background: rgba(255, 255, 255, 0.5);
+  background: color-mix(in srgb, white 50%, transparent);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  border: 1px solid color-mix(in srgb, white 60%, transparent);
   border-radius: 28px;
   padding: 64px 32px;
 }
@@ -62,7 +61,7 @@
   width: 80px;
   height: 80px;
   border-radius: 24px;
-  background: rgba(186, 230, 253, 0.4);
+  background: color-mix(in srgb, var(--blue-200) 40%, transparent);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -78,5 +77,5 @@
 
 .placeholderSub {
   font-size: 14px;
-  color: rgba(3, 105, 161, 0.55);
+  color: color-mix(in srgb, var(--blue-700) 55%, transparent);
 }

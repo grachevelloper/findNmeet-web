@@ -10,9 +10,9 @@
   inset: 0;
   background: linear-gradient(
     90deg,
-    rgba(56, 189, 248, 0.2),
-    rgba(125, 211, 252, 0.2),
-    rgba(14, 165, 233, 0.2)
+    color-mix(in srgb, var(--blue-400) 20%, transparent),
+    color-mix(in srgb, var(--blue-300) 20%, transparent),
+    color-mix(in srgb, var(--blue-500) 20%, transparent)
   );
   filter: blur(24px);
   border-radius: 32px;
@@ -25,16 +25,16 @@
   align-items: center;
   gap: 12px;
   padding: 14px 20px;
-  background: rgba(255, 255, 255, 0.65);
+  background: color-mix(in srgb, white 65%, transparent);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  border: 1px solid color-mix(in srgb, white 50%, transparent);
   border-radius: 32px;
-  box-shadow: 0 8px 32px rgba(14, 165, 233, 0.12);
+  box-shadow: 0 8px 32px color-mix(in srgb, var(--blue-500) 12%, transparent);
 }
 
 .icon {
-  color: rgba(2, 132, 199, 0.6);
+  color: color-mix(in srgb, var(--blue-600) 60%, transparent);
   flex-shrink: 0;
 }
 
@@ -43,13 +43,12 @@
   border: none;
   outline: none;
   background: transparent;
-  font-family: var(--font-body);
   font-size: 15px;
   color: var(--blue-950);
 }
 
 .input::placeholder {
-  color: rgba(12, 35, 64, 0.4);
+  color: color-mix(in srgb, var(--blue-950) 40%, transparent);
 }
 
 .aiBtn {
@@ -61,10 +60,9 @@
   color: white;
   border: none;
   border-radius: 24px;
-  font-family: var(--font-body);
   font-size: 14px;
   font-weight: 500;
-  box-shadow: 0 4px 16px rgba(14, 165, 233, 0.3);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--blue-500) 30%, transparent);
   flex-shrink: 0;
   transition: opacity 0.2s, transform 0.15s;
 }

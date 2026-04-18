@@ -20,7 +20,7 @@
 .subtitle {
   font-size: 18px;
   line-height: 1.65;
-  color: rgba(7, 89, 133, 0.75);
+  color: color-mix(in srgb, var(--blue-800) 75%, transparent);
   max-width: 600px;
   margin: 0 auto;
 }
@@ -42,7 +42,7 @@
   border-radius: 28px;
   overflow: hidden;
   min-height: 320px;
-  box-shadow: 0 12px 40px rgba(12, 35, 64, 0.2);
+  box-shadow: 0 12px 40px color-mix(in srgb, var(--blue-950) 20%, transparent);
   cursor: pointer;
 }
 
@@ -61,7 +61,12 @@
 .overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(12, 35, 64, 0.9) 0%, rgba(12, 35, 64, 0.45) 50%, transparent 100%);
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--blue-950) 90%, transparent) 0%,
+    color-mix(in srgb, var(--blue-950) 45%, transparent) 50%,
+    transparent 100%
+  );
 }
 
 .content {
@@ -77,10 +82,10 @@
   width: 56px;
   height: 56px;
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.2);
+  background: color-mix(in srgb, white 20%, transparent);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid color-mix(in srgb, white 30%, transparent);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -98,7 +103,7 @@
 .cardDesc {
   font-size: 15px;
   line-height: 1.6;
-  color: rgba(224, 242, 254, 0.85);
+  color: color-mix(in srgb, var(--blue-100) 85%, transparent);
   margin-bottom: 16px;
 }
 
@@ -108,7 +113,7 @@
   gap: 6px;
   font-size: 14px;
   font-weight: 500;
-  color: rgba(125, 211, 252, 0.9);
+  color: color-mix(in srgb, var(--blue-300) 90%, transparent);
   opacity: 0;
   transition: opacity 0.3s;
 }

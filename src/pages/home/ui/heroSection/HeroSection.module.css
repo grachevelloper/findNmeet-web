@@ -24,7 +24,7 @@
 .desc {
   font-size: 18px;
   line-height: 1.65;
-  color: rgba(7, 89, 133, 0.75);
+  color: color-mix(in srgb, var(--blue-800) 75%, transparent);
   max-width: 600px;
   margin: 0 auto 48px;
 }
@@ -47,12 +47,12 @@
   align-items: center;
   gap: 12px;
   padding: 14px 20px;
-  background: rgba(255, 255, 255, 0.5);
+  background: color-mix(in srgb, white 50%, transparent);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  border: 1px solid color-mix(in srgb, white 60%, transparent);
   border-radius: 20px;
-  box-shadow: 0 4px 16px rgba(14, 165, 233, 0.08);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--blue-500) 8%, transparent);
 }
 
 .statIcon {
@@ -68,7 +68,7 @@
 
 .statLabel {
   font-size: 12px;
-  color: rgba(3, 105, 161, 0.65);
+  color: color-mix(in srgb, var(--blue-700) 65%, transparent);
 }
 
 .statValue {

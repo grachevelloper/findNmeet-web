@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next'
 import { motion } from 'motion/react'
 import { Heart, Search } from 'lucide-react'
-import styles from './CtaSection.module.css'
+import styles from './CallToActionSection.module.css'
 
-export function CtaSection() {
+export function CallToActionSection() {
   const { t } = useTranslation()
 
   return (

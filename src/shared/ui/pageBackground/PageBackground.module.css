@@ -1,12 +1,12 @@
-.bg {
+.gradientBase {
   position: fixed;
   inset: 0;
-  background: linear-gradient(135deg, #f0f8ff 0%, #e0f2fe 50%, #bae6fd 100%);
+  background: linear-gradient(135deg, var(--blue-50) 0%, var(--blue-100) 50%, var(--blue-200) 100%);
   z-index: -1;
   pointer-events: none;
 }
 
-.orbs {
+.glowOrbs {
   position: fixed;
   inset: 0;
   z-index: -1;
@@ -14,36 +14,57 @@
   pointer-events: none;
 }
 
-.orb1 {
+.glowOrb1 {
   position: absolute;
   width: 384px;
   height: 384px;
   top: 80px;
   left: 80px;
-  background: rgba(125, 211, 252, 0.3);
+  background: color-mix(in srgb, var(--blue-300) 30%, transparent);
   border-radius: 50%;
   filter: blur(80px);
 }
 
-.orb2 {
+.glowOrb2 {
   position: absolute;
   width: 480px;
   height: 480px;
   bottom: 80px;
   right: 80px;
-  background: rgba(56, 189, 248, 0.2);
+  background: color-mix(in srgb, var(--blue-400) 20%, transparent);
   border-radius: 50%;
   filter: blur(80px);
 }
 
-.orb3 {
+.glowOrb3 {
   position: absolute;
   width: 320px;
   height: 320px;
   top: 50%;
   left: 50%;
   translate: -50% -50%;
-  background: rgba(14, 165, 233, 0.15);
+  background: color-mix(in srgb, var(--blue-500) 15%, transparent);
   border-radius: 50%;
   filter: blur(80px);
+}
+
+@media (max-width: 768px) {
+  .glowOrb1 {
+    width: 200px;
+    height: 200px;
+    top: 40px;
+    left: 20px;
+  }
+
+  .glowOrb2 {
+    width: 240px;
+    height: 240px;
+    bottom: 40px;
+    right: 20px;
+  }
+
+  .glowOrb3 {
+    width: 160px;
+    height: 160px;
+  }
 }

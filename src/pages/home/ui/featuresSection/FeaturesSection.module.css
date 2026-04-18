@@ -1,6 +1,6 @@
 .section {
   padding: 80px 24px;
-  background: rgba(255, 255, 255, 0.3);
+  background: color-mix(in srgb, white 30%, transparent);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   width: 100%;
@@ -27,7 +27,7 @@
 .subtitle {
   font-size: 18px;
   line-height: 1.65;
-  color: rgba(7, 89, 133, 0.75);
+  color: color-mix(in srgb, var(--blue-800) 75%, transparent);
   max-width: 600px;
   margin: 0 auto;
 }
@@ -40,18 +40,18 @@
 }
 
 .card {
-  background: rgba(255, 255, 255, 0.55);
+  background: color-mix(in srgb, white 55%, transparent);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  border: 1px solid color-mix(in srgb, white 60%, transparent);
   border-radius: 28px;
   padding: 28px 24px;
-  box-shadow: 0 8px 32px rgba(14, 165, 233, 0.08);
+  box-shadow: 0 8px 32px color-mix(in srgb, var(--blue-500) 8%, transparent);
   transition: box-shadow 0.3s;
 }
 
 .card:hover {
-  box-shadow: 0 16px 48px rgba(14, 165, 233, 0.18);
+  box-shadow: 0 16px 48px color-mix(in srgb, var(--blue-500) 18%, transparent);
 }
 
 .icon {
@@ -63,7 +63,7 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 20px;
-  box-shadow: 0 6px 16px rgba(14, 165, 233, 0.3);
+  box-shadow: 0 6px 16px color-mix(in srgb, var(--blue-500) 30%, transparent);
 }
 
 .cardTitle {
@@ -77,5 +77,5 @@
 .cardDesc {
   font-size: 15px;
   line-height: 1.6;
-  color: rgba(7, 89, 133, 0.75);
+  color: color-mix(in srgb, var(--blue-800) 75%, transparent);
 }
