@@ -1,4 +1,4 @@
-# findNmeet Web
+# FinDnMeeT Web
 
 ## Stack
 - React 19 + TypeScript + Vite 8

@@ -3,6 +3,9 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { ConfigProvider } from 'antd'
 import { RouterProvider } from 'react-router'
 import { router } from '../router'
+import { initVkId } from '@features/auth'
+
+initVkId()
 
 const queryClient = new QueryClient({
   defaultOptions: {

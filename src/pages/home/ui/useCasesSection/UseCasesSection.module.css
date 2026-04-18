@@ -1,0 +1,118 @@
+.section {
+  padding: 80px 24px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.head {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  color: var(--blue-950);
+  margin-bottom: 16px;
+}
+
+.subtitle {
+  font-size: 18px;
+  line-height: 1.65;
+  color: rgba(7, 89, 133, 0.75);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  position: relative;
+  border-radius: 28px;
+  overflow: hidden;
+  min-height: 320px;
+  box-shadow: 0 12px 40px rgba(12, 35, 64, 0.2);
+  cursor: pointer;
+}
+
+.img {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.5s ease;
+}
+
+.card:hover .img {
+  transform: scale(1.05);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(12, 35, 64, 0.9) 0%, rgba(12, 35, 64, 0.45) 50%, transparent 100%);
+}
+
+.content {
+  position: relative;
+  padding: 32px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.cardTitle {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.cardDesc {
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(224, 242, 254, 0.85);
+  margin-bottom: 16px;
+}
+
+.learnMore {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(125, 211, 252, 0.9);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.card:hover .learnMore {
+  opacity: 1;
+}

@@ -1,0 +1,1 @@
+export { VkIdButton } from './VkIdButton'

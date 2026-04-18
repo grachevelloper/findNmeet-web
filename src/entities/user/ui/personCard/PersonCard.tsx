@@ -35,7 +35,6 @@ export function PersonCard({ person, index }: PersonCardProps) {
       transition={{ duration: 0.5, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
       whileHover={{ y: -4, transition: { duration: 0.2 } }}
     >
-      <div className={styles.glow} />
       <div className={styles.card}>
         <div className={styles.top}>
           <div className={styles.avatarWrap}>

@@ -2,7 +2,8 @@
   position: relative;
 }
 
-.glow {
+.wrapper::before {
+  content: '';
   position: absolute;
   inset: 0;
   background: linear-gradient(
@@ -18,7 +19,7 @@
   pointer-events: none;
 }
 
-.wrapper:hover .glow {
+.wrapper:hover::before {
   opacity: 1;
 }
 
