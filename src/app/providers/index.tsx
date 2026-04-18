@@ -23,6 +23,7 @@ export function AppProviders() {
         token: {
           colorPrimary: '#0EA5E9',
           colorLink: '#0284C7',
+          colorBgMask: 'rgba(0, 0, 0, 0.6)',
           borderRadius: 12,
           fontFamily: "'Manrope', sans-serif",
         },

@@ -1,7 +1,7 @@
 .footer {
   padding: 40px 24px;
-  border-top: 1px solid rgba(186, 230, 253, 0.3);
-  background: rgba(255, 255, 255, 0.2);
+  border-top: 1px solid color-mix(in srgb, var(--blue-200) 30%, transparent);
+  background: color-mix(in srgb, white 20%, transparent);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
@@ -40,5 +40,5 @@
 
 .copy {
   font-size: 13px;
-  color: rgba(3, 105, 161, 0.55);
+  color: color-mix(in srgb, var(--blue-700) 55%, transparent);
 }

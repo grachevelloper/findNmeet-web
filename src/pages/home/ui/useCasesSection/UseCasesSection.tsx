@@ -3,15 +3,15 @@ import { motion } from 'motion/react'
 import { ArrowRight, Coffee, Heart, Star, UserPlus } from 'lucide-react'
 import styles from './UseCasesSection.module.css'
 
-const images = [
+const IMAGES = [
   'https://images.unsplash.com/flagged/photo-1575390130509-87f184b5d188?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb3VwbGUlMjBkYXRpbmclMjByZXN0YXVyYW50fGVufDF8fHx8MTc3NjQzMjIyOHww&ixlib=rb-4.1.0&q=80&w=1080',
   'https://images.unsplash.com/photo-1623120893483-0e9d83ebbfe1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmcmllbmRzJTIwbGF1Z2hpbmclMjBjb2ZmZWV8ZW58MXx8fHwxNzc2NDMyMjI4fDA&ixlib=rb-4.1.0&q=80&w=1080',
   'https://images.unsplash.com/photo-1768226791333-32841ea99c82?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwZW9wbGUlMjBob2JieSUyMGFjdGl2aXRpZXN8ZW58MXx8fHwxNzc2NDMyMjI5fDA&ixlib=rb-4.1.0&q=80&w=1080',
   'https://images.unsplash.com/photo-1744943777031-0ac5f4ac490a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxncm91cCUyMGZyaWVuZHMlMjBoYW5naW5nJTIwb3V0fGVufDF8fHx8MTc3NjQzMjIyOXww&ixlib=rb-4.1.0&q=80&w=1080',
 ]
 
-const icons = [Heart, Coffee, Star, UserPlus]
-const keys = ['romance', 'friends', 'interests', 'events'] as const
+const ICONS = [Heart, Coffee, Star, UserPlus]
+const KEYS = ['romance', 'friends', 'interests', 'events'] as const
 
 export function UseCasesSection() {
   const { t } = useTranslation()
@@ -30,8 +30,8 @@ export function UseCasesSection() {
         </motion.div>
 
         <div className={styles.grid}>
-          {keys.map((key, i) => {
-            const Icon = icons[i]
+          {KEYS.map((key, i) => {
+            const Icon = ICONS[i]
             return (
               <motion.div
                 key={key}
@@ -44,7 +44,7 @@ export function UseCasesSection() {
               >
                 <div
                   className={styles.img}
-                  style={{ backgroundImage: `url(${images[i]})` }}
+                  style={{ backgroundImage: `url(${IMAGES[i]})` }}
                 />
                 <div className={styles.overlay} />
                 <div className={styles.content}>

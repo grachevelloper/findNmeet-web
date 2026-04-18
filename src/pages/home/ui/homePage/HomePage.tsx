@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { PageBackground } from '@shared/ui'
 import { AuthModal, loginWithVk, parseVkCallback } from '@features/auth'
+import { TOKEN_KEY, VK_PENDING_QUERY_KEY } from '@shared/config'
 import { LandingHeader } from '../landingHeader'
 import { HeroSection } from '../heroSection'
 import styles from './HomePage.module.css'
@@ -13,17 +14,15 @@ const FeaturesSection = lazy(() =>
 const UseCasesSection = lazy(() =>
   import('../useCasesSection').then((m) => ({ default: m.UseCasesSection })),
 )
-const CtaSection = lazy(() =>
-  import('../ctaSection').then((m) => ({ default: m.CtaSection })),
+const CallToActionSection = lazy(() =>
+  import('../callToActionSection').then((m) => ({ default: m.CallToActionSection })),
 )
-
-const PENDING_QUERY_KEY = 'vk_pending_query'
 
 export function HomePage() {
   const navigate = useNavigate()
   const [isAuthModalOpen, setAuthModalOpen] = useState(false)
-  const [vkToken, setVkToken] = useLocalStorage('token', '')
-  const [queryKey, setQueryKey, removeValue] = useSessionStorage(PENDING_QUERY_KEY, '')
+  const [vkToken, setVkToken] = useLocalStorage(TOKEN_KEY, '')
+  const [queryKey, setQueryKey, removePendingQuery] = useSessionStorage(VK_PENDING_QUERY_KEY, '')
 
   // Обрабатываем редирект от ВК после авторизации
   useEffect(() => {
@@ -32,10 +31,11 @@ export function HomePage() {
 
     loginWithVk(callback)
       .then(({ token }) => {
-      setVkToken(token)
-       removeValue()
+        setVkToken(token)
+        removePendingQuery()
         if (queryKey) {
-          navigate(`/search?q=${encodeURIComponent(queryKey)}`)
+          const encodedQuery = encodeURIComponent(queryKey)
+          navigate(`/search?q=${encodedQuery}`)
         }
       })
       .catch((err) => console.error('[VK ID] login failed', err))
@@ -51,7 +51,7 @@ export function HomePage() {
   }
 
   const handleAuthModalClose = () => {
-    removeValue()
+    removePendingQuery()
     setAuthModalOpen(false)
   }
 
@@ -64,7 +64,7 @@ export function HomePage() {
         <Suspense>
           <FeaturesSection />
           <UseCasesSection />
-          <CtaSection />
+          <CallToActionSection />
         </Suspense>
       </div>
 

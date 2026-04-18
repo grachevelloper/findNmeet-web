@@ -1,6 +1,6 @@
 import * as VKID from '@vkid/sdk'
-import { VK_APP_ID, VK_REDIRECT_URL } from '@shared/config'
-import { generateCodeVerifier, generateState } from '../lib/proofKeyForCodeExchange'
+import { VK_APP_ID, VK_REDIRECT_URL, VK_AUTH_STATE_KEY, VK_CODE_VERIFIER_KEY } from '@shared/config'
+import { generateCodeVerifier, generateState } from './proofKeyForCodeExchange'
 
 let initialized = false
 
@@ -11,8 +11,8 @@ export function initVkId() {
   const state = generateState()
   const codeVerifier = generateCodeVerifier()
 
-  sessionStorage.setItem('vk_auth_state', state)
-  sessionStorage.setItem('vk_code_verifier', codeVerifier)
+  sessionStorage.setItem(VK_AUTH_STATE_KEY, state)
+  sessionStorage.setItem(VK_CODE_VERIFIER_KEY, codeVerifier)
 
   VKID.Config.init({
     app: VK_APP_ID,

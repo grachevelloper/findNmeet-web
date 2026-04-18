@@ -11,7 +11,7 @@
   text-align: center;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 24px 64px rgba(14, 165, 233, 0.35);
+  box-shadow: 0 24px 64px color-mix(in srgb, var(--blue-500) 35%, transparent);
 }
 
 .card::before,
@@ -28,13 +28,13 @@
 .card::before {
   top: -64px;
   right: -64px;
-  background: rgba(255, 255, 255, 0.15);
+  background: color-mix(in srgb, white 15%, transparent);
 }
 
 .card::after {
   bottom: -64px;
   left: -64px;
-  background: rgba(7, 89, 133, 0.3);
+  background: color-mix(in srgb, var(--blue-800) 30%, transparent);
 }
 
 .content {
@@ -48,7 +48,7 @@
   width: 64px;
   height: 64px;
   border-radius: 20px;
-  background: rgba(255, 255, 255, 0.2);
+  background: color-mix(in srgb, white 20%, transparent);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   display: flex;
@@ -68,7 +68,7 @@
 .subtitle {
   font-size: 18px;
   line-height: 1.65;
-  color: rgba(224, 242, 254, 0.85);
+  color: color-mix(in srgb, var(--blue-100) 85%, transparent);
   max-width: 540px;
   margin-bottom: 36px;
 }
@@ -82,13 +82,12 @@
   color: var(--blue-600);
   border: none;
   border-radius: 20px;
-  font-family: var(--font-body);
   font-size: 16px;
   font-weight: 600;
-  box-shadow: 0 8px 24px rgba(12, 35, 64, 0.2);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--blue-950) 20%, transparent);
   transition: box-shadow 0.2s;
 }
 
 .btn:hover {
-  box-shadow: 0 12px 36px rgba(12, 35, 64, 0.3);
+  box-shadow: 0 12px 36px color-mix(in srgb, var(--blue-950) 30%, transparent);
 }

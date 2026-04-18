@@ -1,3 +1,5 @@
+import { VK_AUTH_STATE_KEY, VK_CODE_VERIFIER_KEY } from '@shared/config'
+
 export interface VkAuthCallbackParams {
   code: string
   deviceId: string
@@ -16,16 +18,16 @@ export function parseVkCallback(): VkAuthCallbackParams | null {
 
   if (!code || !state) return null
 
-  const savedState = sessionStorage.getItem('vk_auth_state')
+  const savedState = sessionStorage.getItem(VK_AUTH_STATE_KEY)
   if (state !== savedState) {
     console.warn('[VK ID] state mismatch — возможна CSRF-атака')
     return null
   }
 
-  const codeVerifier = sessionStorage.getItem('vk_code_verifier') ?? ''
+  const codeVerifier = sessionStorage.getItem(VK_CODE_VERIFIER_KEY) ?? ''
 
-  sessionStorage.removeItem('vk_auth_state')
-  sessionStorage.removeItem('vk_code_verifier')
+  sessionStorage.removeItem(VK_AUTH_STATE_KEY)
+  sessionStorage.removeItem(VK_CODE_VERIFIER_KEY)
 
   // Убираем параметры из URL без перезагрузки страницы
   window.history.replaceState({}, '', window.location.pathname)

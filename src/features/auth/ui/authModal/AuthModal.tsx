@@ -1,16 +1,18 @@
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { theme } from 'antd'
 import { motion, AnimatePresence } from 'motion/react'
 import { X } from 'lucide-react'
 import { VkIdButton } from '../vkIdButton'
 import styles from './AuthModal.module.css'
 
-interface Props {
+interface AuthModalProps {
   isOpen: boolean
   onClose: () => void
 }
 
-export function AuthModal({ isOpen, onClose }: Props) {
+export function AuthModal({ isOpen, onClose }: AuthModalProps) {
+  const { token } = theme.useToken()
   const { t } = useTranslation()
 
   useEffect(() => {
@@ -27,6 +29,7 @@ export function AuthModal({ isOpen, onClose }: Props) {
       {isOpen && (
         <motion.div
           className={styles.overlay}
+          style={{ '--overlay-bg': token.colorBgMask } as React.CSSProperties}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}

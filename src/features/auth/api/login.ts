@@ -1,5 +1,5 @@
 import { api } from '@shared/api'
-import type { VkAuthCallbackParams } from '../model'
+import type { VkAuthCallbackParams } from '../lib'
 
 interface LoginResponse {
   token: string
