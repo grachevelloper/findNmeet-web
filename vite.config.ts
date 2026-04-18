@@ -8,6 +8,9 @@ export default defineConfig({
     react(),
     babel({ presets: [reactCompilerPreset()] }),
   ],
+  server: {
+    allowedHosts: ['local.findnmeet.ru'],
+  },
   resolve: {
     alias: {
       '@app': resolve(__dirname, 'src/app'),

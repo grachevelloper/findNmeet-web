@@ -23,6 +23,9 @@ docs
 *.njsproj
 *.sln
 *.sw?
-
+*local**
 
 **FLOW.md
+
+.claude/**.json
+
