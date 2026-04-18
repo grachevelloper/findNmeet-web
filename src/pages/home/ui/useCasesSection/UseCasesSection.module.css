@@ -1,0 +1,123 @@
+.section {
+  padding: 80px 24px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.head {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  color: var(--blue-950);
+  margin-bottom: 16px;
+}
+
+.subtitle {
+  font-size: 18px;
+  line-height: 1.65;
+  color: color-mix(in srgb, var(--blue-800) 75%, transparent);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  position: relative;
+  border-radius: 28px;
+  overflow: hidden;
+  min-height: 320px;
+  box-shadow: 0 12px 40px color-mix(in srgb, var(--blue-950) 20%, transparent);
+  cursor: pointer;
+}
+
+.img {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.5s ease;
+}
+
+.card:hover .img {
+  transform: scale(1.05);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--blue-950) 90%, transparent) 0%,
+    color-mix(in srgb, var(--blue-950) 45%, transparent) 50%,
+    transparent 100%
+  );
+}
+
+.content {
+  position: relative;
+  padding: 32px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 18px;
+  background: color-mix(in srgb, white 20%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid color-mix(in srgb, white 30%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.cardTitle {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.cardDesc {
+  font-size: 15px;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--blue-100) 85%, transparent);
+  margin-bottom: 16px;
+}
+
+.learnMore {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: color-mix(in srgb, var(--blue-300) 90%, transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.card:hover .learnMore {
+  opacity: 1;
+}

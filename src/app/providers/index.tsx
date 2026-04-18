@@ -3,6 +3,9 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { ConfigProvider } from 'antd'
 import { RouterProvider } from 'react-router'
 import { router } from '../router'
+import { initVkId } from '@features/auth'
+
+initVkId()
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,6 +23,7 @@ export function AppProviders() {
         token: {
           colorPrimary: '#0EA5E9',
           colorLink: '#0284C7',
+          colorBgMask: 'rgba(0, 0, 0, 0.6)',
           borderRadius: 12,
           fontFamily: "'Manrope', sans-serif",
         },

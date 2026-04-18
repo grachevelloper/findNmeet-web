@@ -43,10 +43,15 @@ p {
   margin: 0;
 }
 
-button {
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
   cursor: pointer;
 }
 
-input {
-  font-family: var(--font-body);
+input,
+textarea {
+  cursor: auto;
 }

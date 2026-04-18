@@ -1,0 +1,5 @@
+export { VkIdButton } from './ui/vkIdButton'
+export { AuthModal } from './ui/authModal'
+export { initVkId, parseVkCallback } from './lib'
+export { loginWithVk } from './api'
+export type { VkAuthCallbackParams } from './lib'
