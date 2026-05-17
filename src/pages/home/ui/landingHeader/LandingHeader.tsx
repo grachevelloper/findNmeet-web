@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { motion } from 'motion/react'
-import { Sparkles, Users } from 'lucide-react'
+import { Users } from 'lucide-react'
+import { AuthControl } from '@features/auth'
 import styles from './LandingHeader.module.css'
 
 export function LandingHeader() {
@@ -22,10 +23,9 @@ export function LandingHeader() {
           <p className={styles.logoSub}>{t('header.logoSub')}</p>
         </div>
       </div>
-      <button className={styles.aiBtn}>
-        <Sparkles size={15} color="var(--blue-600)" />
-        {t('header.aiAssistant')}
-      </button>
+      <div className={styles.actions}>
+        <AuthControl />
+      </div>
     </motion.header>
   )
 }

@@ -3,7 +3,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { ConfigProvider } from 'antd'
 import { RouterProvider } from 'react-router'
 import { router } from '../router'
-import { initVkId } from '@features/auth'
+import { AuthProvider, initVkId } from '@features/auth'
 
 initVkId()
 
@@ -30,7 +30,9 @@ export function AppProviders() {
       }}
     >
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
+        <AuthProvider>
+          <RouterProvider router={router} />
+        </AuthProvider>
         {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
       </QueryClientProvider>
     </ConfigProvider>

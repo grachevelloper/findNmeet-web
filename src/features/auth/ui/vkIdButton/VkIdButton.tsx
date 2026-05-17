@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import * as VKID from '@vkid/sdk'
+import { initVkId } from '../../lib'
 import styles from './VkIdButton.module.css'
 
 export function VkIdButton() {
@@ -12,6 +13,8 @@ export function VkIdButton() {
   useEffect(() => {
     const container = containerRef.current
     if (!container) return
+
+    initVkId()
 
     const oneTap = new VKID.OneTap()
     oneTap

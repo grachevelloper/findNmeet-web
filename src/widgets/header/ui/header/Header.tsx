@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { motion } from 'motion/react'
-import { Sparkles, Users } from 'lucide-react'
+import { Users } from 'lucide-react'
+import { AuthControl } from '@features/auth'
 import styles from './Header.module.css'
 
 export function Header() {
-  const { t } = useTranslation()
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
@@ -42,10 +41,9 @@ export function Header() {
           </div>
           <span className={styles.logoText}>FinDnMeet</span>
         </div>
-        <button className={styles.aiBtn}>
-          <Sparkles size={14} color="var(--blue-600)" />
-          {t('header.aiAssistant')}
-        </button>
+        <div className={styles.actions}>
+          <AuthControl size="sm" />
+        </div>
       </div>
     </motion.header>
   )

@@ -1,7 +1,7 @@
-import { lazy, Suspense, useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router'
 import { PageBackground } from '@shared/ui'
-import { AuthModal, getCurrentUser, loginWithVk, parseVkCallback } from '@features/auth'
+import { useAuth } from '@features/auth'
 import { VK_PENDING_QUERY_KEY } from '@shared/config'
 import { LandingHeader } from '../landingHeader'
 import { HeroSection } from '../heroSection'
@@ -20,55 +20,30 @@ const CallToActionSection = lazy(() =>
 
 export function HomePage() {
   const navigate = useNavigate()
-  const [isAuthModalOpen, setAuthModalOpen] = useState(false)
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const { closeAuthModal, isAuthModalOpen, isAuthenticated, openAuthModal } = useAuth()
   const [queryKey, setQueryKey, removePendingQuery] = useSessionStorage(VK_PENDING_QUERY_KEY, '')
+  const wasAuthModalOpenRef = useRef(false)
 
   useEffect(() => {
-    let active = true
-    const callback = parseVkCallback()
+    if (!isAuthenticated) return
 
-    if (!callback) {
-      return () => {
-        active = false
-      }
-    }
+    closeAuthModal()
 
-    loginWithVk(callback)
-      .then(() => {
-        if (!active) return
-        setIsAuthenticated(true)
-        setAuthModalOpen(false)
-        removePendingQuery()
-        if (queryKey) {
-          const encodedQuery = encodeURIComponent(queryKey)
-          navigate(`/search?q=${encodedQuery}`)
-        }
-      })
-      .catch((err) => console.error('[VK ID] login failed', err))
+    if (!queryKey) return
 
-    return () => {
-      active = false
-    }
-  }, [navigate, queryKey, removePendingQuery])
+    removePendingQuery()
+    navigate(`/search?q=${encodeURIComponent(queryKey)}`)
+  }, [closeAuthModal, isAuthenticated, navigate, queryKey, removePendingQuery])
 
   useEffect(() => {
-    let active = true
+    const wasOpen = wasAuthModalOpenRef.current
 
-    getCurrentUser()
-      .then(() => {
-        if (!active) return
-        setIsAuthenticated(true)
-      })
-      .catch(() => {
-        if (!active) return
-        setIsAuthenticated(false)
-      })
-
-    return () => {
-      active = false
+    if (wasOpen && !isAuthModalOpen && !isAuthenticated && queryKey) {
+      removePendingQuery()
     }
-  }, [])
+
+    wasAuthModalOpenRef.current = isAuthModalOpen
+  }, [isAuthModalOpen, isAuthenticated, queryKey, removePendingQuery])
 
   const handleSearch = (query: string) => {
     if (isAuthenticated) {
@@ -77,12 +52,7 @@ export function HomePage() {
     }
 
     setQueryKey(query)
-    setAuthModalOpen(true)
-  }
-
-  const handleAuthModalClose = () => {
-    removePendingQuery()
-    setAuthModalOpen(false)
+    openAuthModal()
   }
 
   return (
@@ -97,8 +67,6 @@ export function HomePage() {
           <CallToActionSection />
         </Suspense>
       </div>
-
-      <AuthModal isOpen={isAuthModalOpen} onClose={handleAuthModalClose} />
     </div>
   )
 }

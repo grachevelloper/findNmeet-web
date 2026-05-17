@@ -7,7 +7,7 @@ export interface VkAuthCallbackParams {
 }
 
 /**
- * Парсит параметры VK ID после редиректа на https://findnmeet.ru?code=...&state=...&device_id=...
+ * Парсит параметры VK ID после редиректа на https://local.findnmeet.ru?code=...&state=...&device_id=...
  * Возвращает null если параметров нет или state не совпадает.
  */
 export function parseVkCallback(): VkAuthCallbackParams | null {
@@ -26,11 +26,11 @@ export function parseVkCallback(): VkAuthCallbackParams | null {
 
   const codeVerifier = sessionStorage.getItem(VK_CODE_VERIFIER_KEY) ?? ''
 
+  return { code, deviceId, codeVerifier }
+}
+
+export function clearVkCallbackState() {
   sessionStorage.removeItem(VK_AUTH_STATE_KEY)
   sessionStorage.removeItem(VK_CODE_VERIFIER_KEY)
-
-  // Убираем параметры из URL без перезагрузки страницы
   window.history.replaceState({}, '', window.location.pathname)
-
-  return { code, deviceId, codeVerifier }
 }

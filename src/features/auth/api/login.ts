@@ -14,7 +14,7 @@ interface CompleteVkWebAuthRequest {
   deviceId?: string
 }
 
-interface GetUserResponse {
+export interface GetUserResponse {
   user: unknown
   session: {
     expiresAt?: unknown
@@ -55,11 +55,15 @@ export async function loginWithVk(callback: VkAuthCallbackParams): Promise<GetUs
 
   sessionStorage.removeItem(VK_CODE_VERIFIER_KEY)
 
-  await api.post('/api/v1/auth/complete-vk-web-auth', buildCompleteVkWebAuthPayload(tokens, callback))
+  await api.post('/auth/complete-vk-web-auth', buildCompleteVkWebAuthPayload(tokens, callback))
 
-  return api.post<GetUserResponse>('/api/v1/auth/get-user', {}).then((response) => response.data)
+  return api.post<GetUserResponse>('/auth/get-user', {}).then((response) => response.data)
 }
 
 export function getCurrentUser(): Promise<GetUserResponse> {
-  return api.post<GetUserResponse>('/api/v1/auth/get-user', {}).then((response) => response.data)
+  return api.post<GetUserResponse>('/auth/get-user', {}).then((response) => response.data)
+}
+
+export function revokeSession(): Promise<void> {
+  return api.post('/auth/revoke-session', {}).then(() => undefined)
 }
