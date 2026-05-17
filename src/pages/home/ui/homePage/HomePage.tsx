@@ -1,12 +1,12 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { PageBackground } from '@shared/ui'
-import { AuthModal, loginWithVk, parseVkCallback } from '@features/auth'
-import { TOKEN_KEY, VK_PENDING_QUERY_KEY } from '@shared/config'
+import { AuthModal, getCurrentUser, loginWithVk, parseVkCallback } from '@features/auth'
+import { VK_PENDING_QUERY_KEY } from '@shared/config'
 import { LandingHeader } from '../landingHeader'
 import { HeroSection } from '../heroSection'
 import styles from './HomePage.module.css'
-import { useLocalStorage, useSessionStorage } from '@shared/lib'
+import { useSessionStorage } from '@shared/lib'
 
 const FeaturesSection = lazy(() =>
   import('../featuresSection').then((m) => ({ default: m.FeaturesSection })),
@@ -21,17 +21,24 @@ const CallToActionSection = lazy(() =>
 export function HomePage() {
   const navigate = useNavigate()
   const [isAuthModalOpen, setAuthModalOpen] = useState(false)
-  const [vkToken, setVkToken] = useLocalStorage(TOKEN_KEY, '')
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [queryKey, setQueryKey, removePendingQuery] = useSessionStorage(VK_PENDING_QUERY_KEY, '')
 
-  // Обрабатываем редирект от ВК после авторизации
   useEffect(() => {
+    let active = true
     const callback = parseVkCallback()
-    if (!callback) return
+
+    if (!callback) {
+      return () => {
+        active = false
+      }
+    }
 
     loginWithVk(callback)
-      .then(({ token }) => {
-        setVkToken(token)
+      .then(() => {
+        if (!active) return
+        setIsAuthenticated(true)
+        setAuthModalOpen(false)
         removePendingQuery()
         if (queryKey) {
           const encodedQuery = encodeURIComponent(queryKey)
@@ -39,15 +46,38 @@ export function HomePage() {
         }
       })
       .catch((err) => console.error('[VK ID] login failed', err))
-  }, [navigate])
+
+    return () => {
+      active = false
+    }
+  }, [navigate, queryKey, removePendingQuery])
+
+  useEffect(() => {
+    let active = true
+
+    getCurrentUser()
+      .then(() => {
+        if (!active) return
+        setIsAuthenticated(true)
+      })
+      .catch(() => {
+        if (!active) return
+        setIsAuthenticated(false)
+      })
+
+    return () => {
+      active = false
+    }
+  }, [])
 
   const handleSearch = (query: string) => {
-    if (vkToken) {
+    if (isAuthenticated) {
       navigate(`/search?q=${encodeURIComponent(query)}`)
-    } else {
-      setQueryKey(query)
-      setAuthModalOpen(true)
+      return
     }
+
+    setQueryKey(query)
+    setAuthModalOpen(true)
   }
 
   const handleAuthModalClose = () => {

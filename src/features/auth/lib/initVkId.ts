@@ -19,5 +19,6 @@ export function initVkId() {
     redirectUrl: VK_REDIRECT_URL,
     state,
     codeVerifier,
+    mode: VKID.ConfigAuthMode.Redirect,
   })
 }

@@ -1,1 +1,1 @@
-export { loginWithVk } from './login'
+export { getCurrentUser, loginWithVk } from './login'
