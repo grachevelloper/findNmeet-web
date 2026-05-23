@@ -1,31 +1,80 @@
 import { useTranslation } from 'react-i18next'
 import { motion } from 'motion/react'
-import { Briefcase, Mail, MapPin, Sparkles } from 'lucide-react'
+import {
+  Clock3,
+  GraduationCap,
+  Heart,
+  MapPin,
+  MessageCircleWarning,
+  RefreshCw,
+  Sparkles,
+  Trash2,
+} from 'lucide-react'
+import type { Favorite } from '@shared/types'
 import styles from './PersonCard.module.css'
 
+export interface PersonCardActionState {
+  deleting?: boolean
+  refreshing?: boolean
+  saving?: boolean
+}
+
 export interface Person {
-  id: string
+  externalId: string
   name: string
-  title: string
-  company: string
+  subtitle: string
   location: string
-  email: string
   avatar?: string
-  skills: string[]
+  age?: number
+  university?: string
+  faculty?: string
+  homeTown?: string
+  screenName?: string
+  relation?: string
+  visibility?: string
+  privateMessageStatus?: string
+  note?: string
+  favorite?: Favorite
   matchScore?: number
 }
 
 interface PersonCardProps {
   person: Person
   index: number
+  actionState?: PersonCardActionState
+  onCreateFavorite?: (person: Person) => void
+  onDeleteFavorite?: (person: Person) => void
+  onEditFavorite?: (person: Person) => void
+  onRefreshFavorite?: (person: Person) => void
 }
 
-export function PersonCard({ person, index }: PersonCardProps) {
+function formatUpdatedAt(value?: Favorite['updatedAt']) {
+  const seconds = value?.seconds
+
+  if (!seconds) {
+    return 'Недавно'
+  }
+
+  const date = new Date(Number(seconds) * 1000)
+  return Number.isNaN(date.getTime()) ? 'Недавно' : date.toLocaleDateString('ru-RU')
+}
+
+export function PersonCard({
+  person,
+  index,
+  actionState,
+  onCreateFavorite,
+  onDeleteFavorite,
+  onEditFavorite,
+  onRefreshFavorite,
+}: PersonCardProps) {
   const { t } = useTranslation()
   const initials = person.name
     .split(' ')
     .map((n) => n[0])
     .join('')
+  const education = [person.university, person.faculty].filter(Boolean).join(', ')
+  const isFavorite = Boolean(person.favorite)
 
   return (
     <motion.div
@@ -54,31 +103,90 @@ export function PersonCard({ person, index }: PersonCardProps) {
 
           <div className={styles.info}>
             <p className={styles.name}>{person.name}</p>
-            <p className={styles.title}>{person.title}</p>
+            <p className={styles.title}>{person.subtitle || 'Профиль VK'}</p>
 
             <div className={styles.meta}>
-              <div className={styles.metaRow}>
-                <Briefcase size={14} />
-                <span>{person.company}</span>
-              </div>
               <div className={styles.metaRow}>
                 <MapPin size={14} />
                 <span>{person.location}</span>
               </div>
-              <div className={styles.metaRow}>
-                <Mail size={14} />
-                <span>{person.email}</span>
-              </div>
+              {education && (
+                <div className={styles.metaRow}>
+                  <GraduationCap size={14} />
+                  <span>{education}</span>
+                </div>
+              )}
+              {person.privateMessageStatus && (
+                <div className={styles.metaRow}>
+                  <MessageCircleWarning size={14} />
+                  <span>{person.privateMessageStatus}</span>
+                </div>
+              )}
+              {person.favorite && (
+                <div className={styles.metaRow}>
+                  <Clock3 size={14} />
+                  <span>Избранное обновлено {formatUpdatedAt(person.favorite.updatedAt)}</span>
+                </div>
+              )}
             </div>
 
             <div className={styles.skills}>
-              {person.skills.map((skill) => (
-                <span key={skill} className={styles.skill}>
-                  {skill}
-                </span>
-              ))}
+              {person.homeTown && <span className={styles.skill}>{person.homeTown}</span>}
+              {person.relation && <span className={styles.skill}>{person.relation}</span>}
+              {person.visibility && <span className={styles.skill}>{person.visibility}</span>}
             </div>
+
+            {person.note && (
+              <div className={styles.noteBlock}>
+                <p className={styles.noteLabel}>Заметка</p>
+                <p className={styles.noteText}>{person.note}</p>
+              </div>
+            )}
           </div>
+        </div>
+
+        <div className={styles.actions}>
+          {isFavorite ? (
+            <>
+              <button
+                className={styles.secondaryAction}
+                disabled={actionState?.saving}
+                onClick={() => onEditFavorite?.(person)}
+                type="button"
+              >
+                <Heart size={14} />
+                Изменить заметку
+              </button>
+              <button
+                className={styles.secondaryAction}
+                disabled={actionState?.refreshing}
+                onClick={() => onRefreshFavorite?.(person)}
+                type="button"
+              >
+                <RefreshCw size={14} className={actionState?.refreshing ? styles.spin : undefined} />
+                Обновить
+              </button>
+              <button
+                className={styles.dangerAction}
+                disabled={actionState?.deleting}
+                onClick={() => onDeleteFavorite?.(person)}
+                type="button"
+              >
+                <Trash2 size={14} />
+                Удалить
+              </button>
+            </>
+          ) : (
+            <button
+              className={styles.primaryAction}
+              disabled={actionState?.saving}
+              onClick={() => onCreateFavorite?.(person)}
+              type="button"
+            >
+              <Heart size={14} />
+              Добавить в избранное
+            </button>
+          )}
         </div>
 
         {person.matchScore !== undefined && (

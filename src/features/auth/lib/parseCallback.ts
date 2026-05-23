@@ -1,9 +1,10 @@
-import { VK_AUTH_STATE_KEY, VK_CODE_VERIFIER_KEY } from '@shared/config'
+import { VK_AUTH_STATE_KEY, VK_CODE_VERIFIER_KEY, VK_REDIRECT_URL } from '@shared/config'
 
 export interface VkAuthCallbackParams {
   code: string
-  deviceId: string
+  state: string
   codeVerifier: string
+  redirectUri: string
 }
 
 /**
@@ -14,7 +15,6 @@ export function parseVkCallback(): VkAuthCallbackParams | null {
   const params = new URLSearchParams(window.location.search)
   const code = params.get('code')
   const state = params.get('state')
-  const deviceId = params.get('device_id') ?? ''
 
   if (!code || !state) return null
 
@@ -26,7 +26,7 @@ export function parseVkCallback(): VkAuthCallbackParams | null {
 
   const codeVerifier = sessionStorage.getItem(VK_CODE_VERIFIER_KEY) ?? ''
 
-  return { code, deviceId, codeVerifier }
+  return { code, state, codeVerifier, redirectUri: VK_REDIRECT_URL }
 }
 
 export function clearVkCallbackState() {

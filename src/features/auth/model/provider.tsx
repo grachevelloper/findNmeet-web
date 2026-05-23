@@ -18,7 +18,7 @@ function toAuthenticatedState(response: GetUserResponse) {
 
 export function AuthProvider({ children }: PropsWithChildren) {
   const [status, setStatus] = useState<AuthStatus>('loading')
-  const [user, setUser] = useState<unknown>(null)
+  const [user, setUser] = useState<GetUserResponse['user'] | null>(null)
   const [isAuthModalOpen, setAuthModalOpen] = useState(false)
   const [isLoggingOut, setIsLoggingOut] = useState(false)
 

@@ -1,4 +1,5 @@
 import { createContext } from 'react'
+import type { AuthenticatedUser } from '@shared/types'
 
 export type AuthStatus = 'loading' | 'guest' | 'authenticated'
 
@@ -9,7 +10,7 @@ export interface AuthContextValue {
   isLoggingOut: boolean
   openAuthModal: () => void
   status: AuthStatus
-  user: unknown
+  user: AuthenticatedUser | null
   logout: () => Promise<void>
 }
 
