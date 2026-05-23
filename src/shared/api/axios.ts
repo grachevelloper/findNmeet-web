@@ -1,25 +1,16 @@
 import axios from 'axios'
 
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
-})
-
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token')
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`
+function normalizeBaseUrl(rawBaseUrl: string | undefined) {
+  if (!rawBaseUrl) {
+    return '/api/v1'
   }
-  return config
-})
 
-api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      localStorage.removeItem('token')
-    }
-    return Promise.reject(error)
-  },
-)
+  return rawBaseUrl.endsWith('/') ? rawBaseUrl.slice(0, -1) : rawBaseUrl
+}
+
+const api = axios.create({
+  baseURL: normalizeBaseUrl(import.meta.env.VITE_API_URL),
+  withCredentials: true,
+})
 
 export default api

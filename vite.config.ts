@@ -3,14 +3,25 @@ import react, { reactCompilerPreset } from '@vitejs/plugin-react'
 import babel from '@rolldown/plugin-babel'
 import { resolve } from 'path'
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   plugins: [
     react(),
     babel({ presets: [reactCompilerPreset()] }),
   ],
-  server: {
-    allowedHosts: ['local.findnmeet.ru'],
-  },
+  server:
+    command === 'serve'
+      ? {
+          host: '0.0.0.0',
+          port: 5173,
+          strictPort: true,
+          allowedHosts: ['local.findnmeet.ru'],
+          hmr: {
+            host: 'local.findnmeet.ru',
+            protocol: 'wss',
+            clientPort: 443,
+          },
+        }
+      : undefined,
   resolve: {
     alias: {
       '@app': resolve(__dirname, 'src/app'),
@@ -21,4 +32,4 @@ export default defineConfig({
       '@shared': resolve(__dirname, 'src/shared'),
     },
   },
-})
+}))
