@@ -1,5 +1,6 @@
 import { api } from '@shared/api'
 import type {
+  CreateFavoriteVkProfile,
   CreateFavoriteResponse,
   GetFavoriteResponse,
   ListFavoritesResponse,
@@ -9,13 +10,24 @@ import type {
 
 const provider = 'PROVIDER_VK' as const
 
-export function createFavorite(externalId: string, note: string) {
+export interface CreateFavoriteInput {
+  externalId: string
+  note: string
+  vkProfile?: CreateFavoriteVkProfile
+}
+
+export function buildCreateFavoritePayload(input: CreateFavoriteInput) {
+  return {
+    provider,
+    externalId: input.externalId,
+    note: input.note,
+    ...(input.vkProfile ? { vkProfile: input.vkProfile } : {}),
+  }
+}
+
+export function createFavorite(input: CreateFavoriteInput) {
   return api
-    .post<CreateFavoriteResponse>('/favorites/create-favorite', {
-      provider,
-      externalId,
-      note,
-    })
+    .post<CreateFavoriteResponse>('/favorites/create-favorite', buildCreateFavoritePayload(input))
     .then((response) => response.data)
 }
 

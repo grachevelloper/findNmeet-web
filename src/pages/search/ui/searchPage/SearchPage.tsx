@@ -1,14 +1,15 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Modal, Spin } from 'antd'
+import { Spin } from 'antd'
 import { motion } from 'motion/react'
 import { Search, Sparkles, Users } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useSearchParams } from 'react-router'
 import { PersonCard, mapVkProfileToPerson, type Person } from '@entities/user'
-import { useAuth } from '@features/auth'
-import { createFavorite } from '@features/favorites'
+import { VkIdButton, useAuth } from '@features/auth'
+import { FavoriteDraftModal, createFavorite } from '@features/favorites'
 import { api } from '@shared/api'
+import { formatApiCount } from '@shared/lib'
 import { SearchBar } from '@shared/ui'
 import type { SearchPeopleResponse } from '@shared/types'
 import styles from './SearchPage.module.css'
@@ -17,7 +18,7 @@ export function SearchPage() {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
-  const { isAuthenticated, openAuthModal } = useAuth()
+  const { hasVkOAuth, isAuthenticated } = useAuth()
   const [searchParams] = useSearchParams()
   const query = searchParams.get('q')?.trim() ?? ''
   const [searchValue, setSearchValue] = useState(query)
@@ -29,7 +30,7 @@ export function SearchPage() {
 
   const searchQuery = useInfiniteQuery({
     queryKey: ['search', query],
-    enabled: isAuthenticated && Boolean(query),
+    enabled: isAuthenticated && hasVkOAuth && Boolean(query),
     initialPageParam: '',
     queryFn: ({ pageParam = '' }) =>
       api
@@ -46,7 +47,11 @@ export function SearchPage() {
 
   const createFavoriteMutation = useMutation({
     mutationFn: ({ person, note }: { person: Person; note: string }) =>
-      createFavorite(person.externalId, note),
+      createFavorite({
+        externalId: person.externalId,
+        note,
+        vkProfile: person.vkProfile,
+      }),
     onSuccess: async () => {
       setFavoriteDraft(null)
       await queryClient.invalidateQueries({ queryKey: ['favorites', 'vk'] })
@@ -57,14 +62,11 @@ export function SearchPage() {
     () =>
       (searchQuery.data?.pages ?? [])
         .flatMap((page) => page.result?.profiles ?? [])
-        .map((profile, index) => ({
-          ...mapVkProfileToPerson(profile),
-          matchScore: Math.max(64, 96 - (index % 6) * 4),
-        })),
+        .map((profile) => mapVkProfileToPerson(profile)),
     [searchQuery.data],
   )
 
-  const totalCount = searchQuery.data?.pages?.[0]?.result?.totalCount
+  const totalCount = formatApiCount(searchQuery.data?.pages?.[0]?.result?.totalCount)
   const aiStatus = searchQuery.data?.pages?.[0]?.result?.aiStatus
 
   const submitSearch = () => {
@@ -74,7 +76,12 @@ export function SearchPage() {
     }
 
     if (!isAuthenticated) {
-      openAuthModal()
+      navigate(`/search?q=${encodeURIComponent(trimmed)}`)
+      return
+    }
+
+    if (!hasVkOAuth) {
+      navigate(`/search?q=${encodeURIComponent(trimmed)}`)
       return
     }
 
@@ -121,10 +128,24 @@ export function SearchPage() {
               <Users size={40} color="var(--blue-400)" />
             </div>
             <p className={styles.placeholderText}>Поиск работает только для авторизованной сессии</p>
-            <p className={styles.placeholderSub}>Открой вход через VK, после этого можно будет искать и сохранять профили.</p>
-            <button className={styles.primaryButton} onClick={openAuthModal} type="button">
-              Войти через VK
-            </button>
+            <p className={styles.placeholderSub}>Войдите через VK, после этого можно будет искать и сохранять профили.</p>
+            <VkIdButton redirectTo={query ? `/search?q=${encodeURIComponent(query)}` : '/search'} />
+          </motion.div>
+        ) : !hasVkOAuth ? (
+          <motion.div
+            className={styles.placeholder}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <div className={styles.placeholderIcon}>
+              <Users size={40} color="var(--blue-400)" />
+            </div>
+            <p className={styles.placeholderText}>Для поиска людей подключите VK через OAuth</p>
+            <p className={styles.placeholderSub}>
+              Сессия FindNMeet уже активна, но доступ к VK API для поиска ещё не выдан. Подключи VK и повтори поиск.
+            </p>
+            <VkIdButton redirectTo={query ? `/search?q=${encodeURIComponent(query)}` : '/search'} />
           </motion.div>
         ) : searchQuery.isLoading ? (
           <div className={styles.loaderWrap}>
@@ -186,38 +207,28 @@ export function SearchPage() {
         )}
       </div>
 
-      <Modal
-        title="Добавить в избранное"
+      <FavoriteDraftModal
         open={Boolean(favoriteDraft)}
+        person={favoriteDraft?.person}
+        note={favoriteDraft?.note ?? ''}
+        saving={createFavoriteMutation.isPending}
         onCancel={() => setFavoriteDraft(null)}
-        onOk={() => {
+        onNoteChange={(note) =>
+          setFavoriteDraft((current) =>
+            current
+              ? {
+                  ...current,
+                  note,
+                }
+              : current,
+          )
+        }
+        onSubmit={() => {
           if (favoriteDraft) {
             void createFavoriteMutation.mutateAsync(favoriteDraft)
           }
         }}
-        okText="Сохранить"
-        confirmLoading={createFavoriteMutation.isPending}
-      >
-        <p style={{ marginBottom: 12 }}>
-          <strong>{favoriteDraft?.person.name}</strong>
-        </p>
-        <textarea
-          rows={5}
-          value={favoriteDraft?.note ?? ''}
-          onChange={(event) =>
-            setFavoriteDraft((current) =>
-              current
-                ? {
-                    ...current,
-                    note: event.target.value,
-                  }
-                : current,
-            )
-          }
-          placeholder="Что важно про этого человека: контекст, причина сохранить, следующий шаг."
-          style={{ width: '100%', borderRadius: 12, padding: 12, resize: 'vertical' }}
-        />
-      </Modal>
+      />
     </div>
   )
 }

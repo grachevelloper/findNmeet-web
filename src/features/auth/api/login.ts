@@ -10,6 +10,7 @@ interface CompleteVkOAuthRequest {
   state: string
   redirectUri: string
   codeVerifier: string
+  deviceId?: string
 }
 
 function buildCompleteVkOAuthPayload(callback: VkAuthCallbackParams): CompleteVkOAuthRequest {
@@ -18,6 +19,7 @@ function buildCompleteVkOAuthPayload(callback: VkAuthCallbackParams): CompleteVk
     state: callback.state,
     redirectUri: callback.redirectUri,
     codeVerifier: callback.codeVerifier,
+    deviceId: callback.deviceId || undefined,
   }
 }
 

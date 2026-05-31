@@ -1,12 +1,13 @@
 import { useMemo, useState } from 'react'
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Modal, Spin } from 'antd'
+import { Spin } from 'antd'
 import { motion } from 'motion/react'
 import { Heart, Search } from 'lucide-react'
 import { useNavigate } from 'react-router'
-import { PersonCard } from '@entities/user'
 import { mapVkProfileToPerson } from '@entities/user'
 import {
+  FavoriteNoteModal,
+  FavoritePersonCard,
   deleteFavorite,
   listFavorites,
   refreshFavorite,
@@ -102,7 +103,7 @@ export function FavoritesPage() {
           <div className={styles.heroActions}>
             <button className={styles.heroButton} onClick={() => navigate('/search')} type="button">
               <Search size={16} />
-              Вернуться к поиску
+              Перейти к поиску
             </button>
           </div>
         </motion.div>
@@ -123,7 +124,7 @@ export function FavoritesPage() {
                 const favoriteId = person.favorite?.id?.value ?? ''
 
                 return (
-                  <PersonCard
+                  <FavoritePersonCard
                     key={favoriteId || person.externalId}
                     person={person}
                     index={index}
@@ -132,19 +133,19 @@ export function FavoritesPage() {
                       refreshing: refreshMutation.isPending && refreshMutation.variables === favoriteId,
                       saving: updateMutation.isPending && updateMutation.variables?.favoriteId === favoriteId,
                     }}
-                    onDeleteFavorite={(current) => {
+                    onDelete={(current) => {
                       const id = current.favorite?.id?.value
                       if (id) {
                         void deleteMutation.mutateAsync(id)
                       }
                     }}
-                    onEditFavorite={(current) => {
+                    onEditNote={(current) => {
                       const id = current.favorite?.id?.value
                       if (id) {
                         setNoteModalState({ favoriteId: id, value: current.note ?? '' })
                       }
                     }}
-                    onRefreshFavorite={(current) => {
+                    onRefresh={(current) => {
                       const id = current.favorite?.id?.value
                       if (id) {
                         void refreshMutation.mutateAsync(id)
@@ -171,11 +172,22 @@ export function FavoritesPage() {
         )}
       </div>
 
-      <Modal
-        title="Обновить заметку"
+      <FavoriteNoteModal
         open={Boolean(noteModalState)}
+        note={noteModalState?.value ?? ''}
+        saving={updateMutation.isPending && updateMutation.variables?.favoriteId === activeFavoriteId}
         onCancel={() => setNoteModalState(null)}
-        onOk={() => {
+        onNoteChange={(note) =>
+          setNoteModalState((current) =>
+            current
+              ? {
+                  ...current,
+                  value: note,
+                }
+              : current,
+          )
+        }
+        onSubmit={() => {
           if (noteModalState) {
             void updateMutation.mutateAsync({
               favoriteId: noteModalState.favoriteId,
@@ -183,25 +195,7 @@ export function FavoritesPage() {
             })
           }
         }}
-        okText="Сохранить"
-        confirmLoading={updateMutation.isPending && updateMutation.variables?.favoriteId === activeFavoriteId}
-      >
-        <textarea
-          rows={5}
-          value={noteModalState?.value ?? ''}
-          onChange={(event) =>
-            setNoteModalState((current) =>
-              current
-                ? {
-                    ...current,
-                    value: event.target.value,
-                  }
-                : current,
-            )
-          }
-          style={{ width: '100%', borderRadius: 12, padding: 12, resize: 'vertical' }}
-        />
-      </Modal>
+      />
     </div>
   )
 }

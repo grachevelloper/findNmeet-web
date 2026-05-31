@@ -1,46 +1,39 @@
-import { useEffect, useState } from 'react'
 import { motion } from 'motion/react'
-import { Users } from 'lucide-react'
+import { Heart, Search, Users } from 'lucide-react'
+import { NavLink } from 'react-router'
 import { AuthControl } from '@features/auth'
+import { getHeaderNavItems } from '../../model'
 import styles from './Header.module.css'
 
 export function Header() {
-  const [visible, setVisible] = useState(false)
-
-  useEffect(() => {
-    let timer: ReturnType<typeof setTimeout>
-
-    const onScroll = () => {
-      clearTimeout(timer)
-      timer = setTimeout(() => {
-        setVisible(window.scrollY > 100)
-      }, 200)
-    }
-
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => {
-      window.removeEventListener('scroll', onScroll)
-      clearTimeout(timer)
-    }
-  }, [])
+  const navItems = getHeaderNavItems()
 
   return (
     <motion.header
       className={styles.header}
-      animate={{ y: visible ? 0 : -100, opacity: visible ? 1 : 0 }}
-      transition={{
-        y: { duration: 0.4, ease: 'easeInOut' },
-        opacity: { duration: 0.2, ease: 'easeOut' },
-      }}
-      style={{ pointerEvents: visible ? 'auto' : 'none' }}
+      initial={{ opacity: 0, y: -16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
     >
       <div className={styles.inner}>
-        <div className={styles.logo}>
+        <NavLink className={styles.logo} to="/">
           <div className={styles.logoIcon}>
             <Users size={18} color="white" />
           </div>
           <span className={styles.logoText}>FinDnMeet</span>
-        </div>
+        </NavLink>
+        <nav className={styles.nav} aria-label="Основная навигация">
+          {navItems.map((item) => (
+            <NavLink
+              key={item.to}
+              className={({ isActive }) => `${styles.navLink} ${isActive ? styles.navLinkActive : ''}`}
+              to={item.to}
+            >
+              {item.to === '/search' ? <Search size={15} /> : <Heart size={15} />}
+              {item.label}
+            </NavLink>
+          ))}
+        </nav>
         <div className={styles.actions}>
           <AuthControl size="sm" />
         </div>

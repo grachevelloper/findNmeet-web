@@ -5,16 +5,18 @@ export interface VkAuthCallbackParams {
   state: string
   codeVerifier: string
   redirectUri: string
+  deviceId: string
 }
 
 /**
- * Парсит параметры VK ID после редиректа на https://local.findnmeet.ru?code=...&state=...&device_id=...
+ * Парсит OAuth callback после редиректа на configured VK_REDIRECT_URL.
  * Возвращает null если параметров нет или state не совпадает.
  */
 export function parseVkCallback(): VkAuthCallbackParams | null {
   const params = new URLSearchParams(window.location.search)
   const code = params.get('code')
   const state = params.get('state')
+  const deviceId = params.get('device_id') ?? ''
 
   if (!code || !state) return null
 
@@ -26,7 +28,7 @@ export function parseVkCallback(): VkAuthCallbackParams | null {
 
   const codeVerifier = sessionStorage.getItem(VK_CODE_VERIFIER_KEY) ?? ''
 
-  return { code, state, codeVerifier, redirectUri: VK_REDIRECT_URL }
+  return { code, state, codeVerifier, redirectUri: VK_REDIRECT_URL, deviceId }
 }
 
 export function clearVkCallbackState() {

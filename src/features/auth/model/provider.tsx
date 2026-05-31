@@ -83,6 +83,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
     <AuthContext
       value={{
         closeAuthModal: () => setAuthModalOpen(false),
+        hasVkOAuth: status === 'authenticated',
         isAuthModalOpen,
         isAuthenticated: status === 'authenticated',
         isLoggingOut,

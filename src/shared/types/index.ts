@@ -19,12 +19,12 @@ export interface PageResponse {
 }
 
 export interface VkReference {
-  id?: string | number
+  id?: string | number | { low: number; high: number; unsigned?: boolean }
   title?: string
 }
 
 export interface VkProfile {
-  vkUserId?: string | number
+  vkUserId?: string | number | { low: number; high: number; unsigned?: boolean }
   firstName?: string
   lastName?: string
   screenName?: string
@@ -41,6 +41,14 @@ export interface VkProfile {
   relation?: string
   visibility?: string
   privateMessageStatus?: string
+}
+
+export interface CreateFavoriteVkProfile {
+  vkUserId: string
+  firstName?: string
+  lastName?: string
+  screenName?: string
+  photoUrl?: string
 }
 
 export interface Favorite {
@@ -102,7 +110,7 @@ export interface GetUserResponse {
 
 export interface SearchResult {
   profiles?: VkProfile[]
-  totalCount?: string | number
+  totalCount?: string | number | { low: number; high: number; unsigned?: boolean }
   aiCriteriaId?: UuidValue
   aiStatus?: string
   page?: PageResponse

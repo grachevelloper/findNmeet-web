@@ -5,9 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite --mode dev --host 0.0.0.0 --port 5173 --strictPort",
-    "dev:local": "vite --mode dev --host 0.0.0.0 --port 5173 --strictPort",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
+    "test": "vitest run",
     "preview": "vite preview",
     "prepare": "husky"
   },
@@ -50,6 +50,7 @@
     "lint-staged": "^16.4.0",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.58.0",
-    "vite": "^8.0.4"
+    "vite": "^8.0.4",
+    "vitest": "^4.1.7"
   }
 }

@@ -8,6 +8,7 @@ export interface AuthContextValue {
   isAuthModalOpen: boolean
   isAuthenticated: boolean
   isLoggingOut: boolean
+  hasVkOAuth: boolean
   openAuthModal: () => void
   status: AuthStatus
   user: AuthenticatedUser | null
