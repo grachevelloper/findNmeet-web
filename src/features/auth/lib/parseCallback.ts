@@ -1,13 +1,15 @@
-import { VK_AUTH_STATE_KEY, VK_CODE_VERIFIER_KEY } from '@shared/config'
+import { VK_AUTH_STATE_KEY, VK_CODE_VERIFIER_KEY, VK_REDIRECT_URL } from '@shared/config'
 
 export interface VkAuthCallbackParams {
   code: string
-  deviceId: string
+  state: string
   codeVerifier: string
+  redirectUri: string
+  deviceId: string
 }
 
 /**
- * Парсит параметры VK ID после редиректа на https://local.findnmeet.ru?code=...&state=...&device_id=...
+ * Парсит OAuth callback после редиректа на configured VK_REDIRECT_URL.
  * Возвращает null если параметров нет или state не совпадает.
  */
 export function parseVkCallback(): VkAuthCallbackParams | null {
@@ -26,7 +28,7 @@ export function parseVkCallback(): VkAuthCallbackParams | null {
 
   const codeVerifier = sessionStorage.getItem(VK_CODE_VERIFIER_KEY) ?? ''
 
-  return { code, deviceId, codeVerifier }
+  return { code, state, codeVerifier, redirectUri: VK_REDIRECT_URL, deviceId }
 }
 
 export function clearVkCallbackState() {

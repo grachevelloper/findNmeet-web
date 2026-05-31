@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router'
 import { RootLayout } from './layouts/RootLayout'
 import { HomePage } from '@pages/home'
 import { SearchPage } from '@pages/search'
+import { FavoritesPage } from '@pages/favorites'
 
 export const router = createBrowserRouter([
   {
@@ -10,6 +11,7 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: 'search', element: <SearchPage /> },
+      { path: 'favorites', element: <FavoritesPage /> },
     ],
   },
 ])

@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router'
 import { PageBackground } from '@shared/ui'
 import { useAuth } from '@features/auth'
 import { VK_PENDING_QUERY_KEY } from '@shared/config'
-import { LandingHeader } from '../landingHeader'
 import { HeroSection } from '../heroSection'
 import styles from './HomePage.module.css'
 import { useSessionStorage } from '@shared/lib'
@@ -28,12 +27,17 @@ export function HomePage() {
     if (!isAuthenticated) return
 
     closeAuthModal()
-
     if (!queryKey) return
 
     removePendingQuery()
     navigate(`/search?q=${encodeURIComponent(queryKey)}`)
-  }, [closeAuthModal, isAuthenticated, navigate, queryKey, removePendingQuery])
+  }, [
+    closeAuthModal,
+    isAuthenticated,
+    navigate,
+    queryKey,
+    removePendingQuery,
+  ])
 
   useEffect(() => {
     const wasOpen = wasAuthModalOpenRef.current
@@ -59,7 +63,6 @@ export function HomePage() {
     <div className={styles.page}>
       <PageBackground />
       <div className={styles.content}>
-        <LandingHeader />
         <HeroSection onSearch={handleSearch} />
         <Suspense>
           <FeaturesSection />

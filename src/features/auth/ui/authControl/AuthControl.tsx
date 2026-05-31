@@ -1,5 +1,6 @@
 import { Dropdown } from 'antd'
-import { ChevronDown, CircleUserRound, LogOut } from 'lucide-react'
+import { ChevronDown, CircleUserRound, Heart, LogOut } from 'lucide-react'
+import { useNavigate } from 'react-router'
 import { useAuth } from '../../model'
 import styles from './AuthControl.module.css'
 
@@ -8,7 +9,12 @@ interface AuthControlProps {
 }
 
 export function AuthControl({ size = 'md' }: AuthControlProps) {
-  const { isLoggingOut, openAuthModal, logout, status } = useAuth()
+  const navigate = useNavigate()
+  const { isLoggingOut, openAuthModal, logout, status, user } = useAuth()
+  const vkProfile = user?.externalLinks?.find((link) => link.provider === 'PROVIDER_VK')
+  const title = vkProfile?.vk?.screenName
+    ? `@${vkProfile.vk.screenName}`
+    : vkProfile?.vk?.firstName ?? 'Профиль'
 
   if (status === 'loading') {
     return <div className={styles.placeholder} data-size={size} aria-hidden="true" />
@@ -31,6 +37,11 @@ export function AuthControl({ size = 'md' }: AuthControlProps) {
         menu={{
           items: [
             {
+              key: 'favorites',
+              label: 'Избранное',
+              icon: <Heart size={16} />,
+            },
+            {
               key: 'logout',
               label: 'Выйти',
               icon: <LogOut size={16} />,
@@ -38,6 +49,11 @@ export function AuthControl({ size = 'md' }: AuthControlProps) {
             },
           ],
           onClick: ({ key }) => {
+            if (key === 'favorites') {
+              navigate('/favorites')
+              return
+            }
+
             if (key === 'logout') {
               void logout().catch(() => undefined)
             }
@@ -54,6 +70,7 @@ export function AuthControl({ size = 'md' }: AuthControlProps) {
           <span className={styles.avatar}>
             <CircleUserRound size={16} />
           </span>
+          <span>{title}</span>
           <ChevronDown size={16} />
         </button>
       </Dropdown>

@@ -1,3 +1,5 @@
 export const VK_PENDING_QUERY_KEY = 'vk_pending_query'
+export const VK_POST_AUTH_REDIRECT_KEY = 'vk_post_auth_redirect'
+export const VK_OAUTH_GRANTED_KEY = 'vk_oauth_granted'
 export const VK_AUTH_STATE_KEY = 'vk_auth_state'
 export const VK_CODE_VERIFIER_KEY = 'vk_code_verifier'
